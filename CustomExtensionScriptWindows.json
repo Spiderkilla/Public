@@ -8,30 +8,33 @@
         },
         "virtualMachineName": {
             "type": "String"
-        }   
-    },
-    "functions": [],
-    "variables": {},
-    "resources": [
-                {
-        "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(parameters('virtualMachineName'), '/CustomScriptExtension')]",
-        "apiVersion": "2020-06-01",
-        "location": "[parameters('location')]",
-        "properties": {
-          "publisher": "Microsoft.Compute",
-          "type": "CustomScriptExtension",
-          "typeHandlerVersion": "1.10",
-          "autoUpgradeMinorVersion": true,
-          "settings": {
-            
-          },
-        "protectedSettings": { 
-        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File CreateADDS.ps1",
-        "fileUris": ["https://raw.githubusercontent.com/Spiderkilla/Public/main/CreateADDS.ps1"]
-
         }
-      }
-    ],
-    "outputs": {}
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-06-01",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "virtualMachineName/config-app",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "CreateADDS"
+            },
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.10",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "timestamp": 123456789
+                },
+                "protectedSettings": {
+                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File CreateADDS.ps1",
+                    "managedIdentity": {},
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/Spiderkilla/Public/main/CreateADDS.ps1"
+                    ]
+                }
+            }
+        }
+    ]
 }
