@@ -6,7 +6,7 @@
             "type": "String",
             "defaultvalue": "westeurope"
         },
-        "virtualMachineName": {
+        "vmName": {
             "type": "String"
         }
     },
@@ -14,11 +14,11 @@
         {
             "apiVersion": "2022-11-01",
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "virtualMachineName/config-app",
+            "name": "virtualMachineName/CreadteADDS",
             "location": "[resourceGroup().location]",
-                "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'),copyindex())]"
-    ],
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/',parameters('vmName'))]"
+            ],
             "tags": {
                 "displayName": "CreateADDS"
             },
