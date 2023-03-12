@@ -1,0 +1,2 @@
+az deployment group create --name remotecreatevm --resource-group remove --template-uri "https://raw.githubusercontent.com/Spiderkilla/Public/568e71d2397a3d3f63537979b409560c4a675af3/CreateWindowsserverVM.json"
+az deployment group create --name CreateADDS --resource-group remove --template-uri "https://raw.githubusercontent.com/Spiderkilla/Public/main/CustomExtensionScriptWindows.json"
