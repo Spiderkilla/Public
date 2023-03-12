@@ -16,6 +16,9 @@
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "virtualMachineName/config-app",
             "location": "[resourceGroup().location]",
+                "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'),copyindex())]"
+    ],
             "tags": {
                 "displayName": "CreateADDS"
             },
