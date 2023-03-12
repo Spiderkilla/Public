@@ -29,7 +29,6 @@
                 },
                 "protectedSettings": {
                     "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File CreateADDS.ps1",
-                    "managedIdentity": {},
                     "fileUris": [
                         "https://raw.githubusercontent.com/Spiderkilla/Public/main/CreateADDS.ps1"
                     ]
