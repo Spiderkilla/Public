@@ -1,0 +1,37 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "String",
+            "defaultvalue": "westeurope"
+        },
+        "virtualMachineName": {
+            "type": "String"
+        }   
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+                {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(parameters('virtualMachineName'), '/CustomScriptExtension')]",
+        "apiVersion": "2020-06-01",
+        "location": "[parameters('location')]",
+        "properties": {
+          "publisher": "Microsoft.Compute",
+          "type": "CustomScriptExtension",
+          "typeHandlerVersion": "1.10",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            
+          },
+        "protectedSettings": { 
+        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File CreateADDSv2.ps1",
+        "fileUris": ["https://terralab3cfrzu.blob.core.windows.net/mycontainer/CreateADDSv2.ps1"]
+
+        }
+      }
+    ],
+    "outputs": {}
+}
