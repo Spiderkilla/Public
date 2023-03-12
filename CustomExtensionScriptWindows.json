@@ -27,8 +27,8 @@
             
           },
         "protectedSettings": { 
-        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File CreateADDSv2.ps1",
-        "fileUris": ["https://terralab3cfrzu.blob.core.windows.net/mycontainer/CreateADDSv2.ps1"]
+        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File CreateADDS.ps1",
+        "fileUris": ["https://raw.githubusercontent.com/Spiderkilla/Public/main/CreateADDS.ps1"]
 
         }
       }
