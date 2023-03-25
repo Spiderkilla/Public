@@ -1,4 +1,4 @@
-$Location= "EastUS"
+$Location= "WestEurope"
 $VMName = "MyVM01"
 $PublicIpAddressName = $VMName + "PubIP"
 
