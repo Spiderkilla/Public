@@ -22,6 +22,3 @@ New-AzVm `
    -ImageName "MicrosoftWindowsServer:WindowsServer:2022-datacenter-g2:latest" `
    -Credential $cred `
    -Verbose
-
-Get-AzPublicIpAddress `
-   -ResourceGroupName "myResourceGroupVM"  | Select IpAddress
