@@ -6,8 +6,6 @@ New-AzResourceGroup `
    -ResourceGroupName "myResourceGroupVM" `
    -Location $Location
 
-$cred = Get-Credential
-
 
 #https://learn.microsoft.com/en-us/azure/virtual-machines/windows/tutorial-manage-vm
 
@@ -20,5 +18,4 @@ New-AzVm `
    -SecurityGroupName "myNetworkSecurityGroup" `
    -PublicIpAddressName $PublicIpAddressName `
    -ImageName "MicrosoftWindowsServer:WindowsServer:2022-datacenter-g2:latest" `
-   -Credential $cred `
    -Verbose
