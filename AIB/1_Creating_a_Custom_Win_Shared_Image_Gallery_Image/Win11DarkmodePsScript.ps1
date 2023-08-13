@@ -1,83 +1,26 @@
-{
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "imageTemplateName": {
-            "type": "string"
-        },
-        "api-version": {
-            "type": "string"
-        },
-        "svclocation": {
-            "type": "string"
-        }
-    },
+$date = Get-date -Format yyyyMMddss
+Start-Transcript -Append C:\Temp\PSScriptLog$date.txt
 
-    "variables": {
-    },
+#Load the hive
+reg load HKLM\SICustom "C:\Users\Default\NTUSER.DAT"
 
+#reg query
+reg Query "HKEY_LOCAL_MACHINE\SICustom\Software\Microsoft\Windows\CurrentVersion\Themes" /s | Out-File -FilePath C:\Temp\RegQueryBefore.txt
+#eg Query "HKEY_LOCAL_MACHINE\SICustom\Software\Microsoft\Windows\CurrentVersion\Themes" /s
+    
+# Set variables to indicate value and key to set
+#$RegistryPath = 'HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize'
+New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes" -Name "CurrentTheme" -Value "C:\Windows\Resources\Themes\themeB.theme" -Force
+New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes" -Name "WallpaperSetFromTheme" -Value "1" -PropertyType DWORD -Force
+New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes" -Name "ColorSetFromTheme" -Value "1" -PropertyType DWORD -Force
+New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLighTheme" -Value "0" -PropertyType DWORD -Force
+New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUsesLightTheme" -Value "0" -PropertyType DWORD -Force
 
-    "resources": [
-        {
-            "name": "[parameters('imageTemplateName')]",
-            "type": "Microsoft.VirtualMachineImages/imageTemplates",
-            "apiVersion": "[parameters('api-version')]",
-            "location": "[parameters('svclocation')]",
-            "dependsOn": [],
-            "tags": {
-                "imagebuilderTemplate": "AzureImageBuilderSIG",
-                "userIdentity": "enabled"
-            },
-            "identity": {
-                "type": "UserAssigned",
-                "userAssignedIdentities": {
-                    "<imgBuilderId>": {}
+#close registry because I have access denied to unload the hive.
+taskkill /f /im regedit.exe
 
-                }
-            },
+#Unload the hive saving the changes
+reg unload HKLM\SICustom
 
-            "properties": {
-                "buildTimeoutInMinutes": 100,
-
-                "vmProfile": {
-                    "vmSize": "Standard_D1_v2",
-                    "osDiskSizeGB": 127
-                },
-
-                "source": {
-                    "type": "PlatformImage",
-                    "publisher": "MicrosoftWindowsDesktop",
-                    "offer": "office-365",
-                    "sku": "win11-22h2-avd-m365",
-                    "version": "latest"
-
-                },
-                "customize": [
-
-                    {
-                        "type": "PowerShell",
-                        "name": "Customisation1",
-                        "scriptUri": "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image/Win11DarkmodePsScript.ps1"
-                    }
-                ],
-                "distribute": [
-                    {
-                        "type": "SharedImage",
-                        "galleryImageId": "/subscriptions/<subscriptionID>/resourceGroups/<rgName>/providers/Microsoft.Compute/galleries/<sharedImageGalName>/images/<imageDefName>",
-                        "runOutputName": "<runOutputName>",
-                        "artifactTags": {
-                            "source": "azureVmImageBuilder",
-                            "baseosimg": "windows11"
-                        },
-                        "replicationRegions": [
-                            "<region1>",
-                            "<region2>"
-                        ]
-                    }
-                ]
-            }
-        }
-
-
-    ]
-}
+#need to create output
+Stop-Transcript
