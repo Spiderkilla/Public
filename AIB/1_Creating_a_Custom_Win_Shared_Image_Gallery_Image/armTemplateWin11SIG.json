@@ -46,9 +46,9 @@
 
                 "source": {
                     "type": "PlatformImage",
-                    "publisher": "MicrosoftWindowsServer",
-                    "offer": "WindowsServer",
-                    "sku": "2019-Datacenter",
+                    "publisher": "MicrosoftWindowsDesktop",
+                    "offer": "office-365",
+                    "sku": "win11-22h2-avd-m365",
                     "version": "latest"
 
                 },
