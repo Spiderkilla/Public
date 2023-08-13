@@ -70,26 +70,6 @@
                         "sourceUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/quickquickstarts/exampleArtifacts/buildArtifacts/index.html",
                         "destination": "c:\\buildArtifacts\\index.html"
                     },
-
-                    {
-                        "type": "PowerShell",
-                        "name": "settingUpMgmtAgtPath",
-                        "inline": [
-                            "mkdir c:\\buildActions",
-                            "echo Azure-Image-Builder-Was-Here  > c:\\buildActions\\buildActionsOutput.txt"
-                        ]
-                    },
-
-                    {
-                        "type": "WindowsUpdate",
-                        "searchCriteria": "IsInstalled=0",
-                        "filters": [
-                            "exclude:$_.Title -like '*Preview*'",
-                            "include:$true"
-                        ],
-                        "updateLimit": 40
-                    }
-
                 ],
                 "distribute": [
                     {
