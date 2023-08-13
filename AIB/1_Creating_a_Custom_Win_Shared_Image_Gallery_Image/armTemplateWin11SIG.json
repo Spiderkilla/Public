@@ -56,8 +56,8 @@
 
                     {
                         "type": "PowerShell",
-                        "name": "CreateBuildPath",
-                        "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/testPsScript.ps1"
+                        "name": "Customisation1",
+                        "scriptUri": "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image/Win11DarkmodePsScript.ps1"
                     }
                 ],
                 "distribute": [
@@ -67,7 +67,7 @@
                         "runOutputName": "<runOutputName>",
                         "artifactTags": {
                             "source": "azureVmImageBuilder",
-                            "baseosimg": "windows2019"
+                            "baseosimg": "windows11"
                         },
                         "replicationRegions": [
                             "<region1>",
