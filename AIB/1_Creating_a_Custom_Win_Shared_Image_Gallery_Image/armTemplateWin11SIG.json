@@ -40,7 +40,6 @@
                 "buildTimeoutInMinutes": 100,
 
                 "vmProfile": {
-                    "vmSize": "Standard_D2ds_v5",
                     "osDiskSizeGB": 127
                 },
 
