@@ -55,17 +55,17 @@
                   
                     {
                         "type": "PowerShell",
-                        "name": "installFsLogix",
+                        "name": "installAzCLI",
                         "runElevated": true,
                         "runAsSystem": true,
-                        "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/solutions/14_Building_Images_WVD/0_installConfFsLogix.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image/Win11AzCLIPsScript.ps1"
                     },
                     {
                         "type": "PowerShell",
-                        "name": "installFsLogix",
+                        "name": "installRSAT",
                         "runElevated": true,
                         "runAsSystem": true,
-                        "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/solutions/14_Building_Images_WVD/0_installConfFsLogix.ps1"
+                        "scriptUri": "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image/Win11RSATPsScript.ps1"
                     },
                     {
                         "type": "PowerShell",
