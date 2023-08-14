@@ -130,7 +130,7 @@ New-AzGalleryImageDefinition `
 $templateFilePath = "armTemplateWin11SIG.json"
 
 Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image/armTemplateWin11SIG.json" `
+    -Uri "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image_AZ_RSAT/armTemplateWin11SIG.json" `
     -OutFile $templateFilePath `
     -UseBasicParsing
    
