@@ -1,4 +1,4 @@
-$List = "Rsat.ActiveDirectory*","Rsat.BitLocker*","Rsat.DHCP*","Rsat.Dns*","Rsat.FileServices*","Rsat.GroupPolicy*","Rsat.FailoverCluster*"
+$List = "Rsat.ActiveDirectory*","Rsat.DHCP*","Rsat.Dns*","Rsat.FileServices*","Rsat.GroupPolicy*"
 
 foreach ($Name in $List)
 {
