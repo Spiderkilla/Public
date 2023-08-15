@@ -62,13 +62,6 @@
                     },
                     {
                         "type": "PowerShell",
-                        "name": "installRSAT",
-                        "runElevated": true,
-                        "runAsSystem": true,
-                        "scriptUri": "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image/Win11RSATPsScript.ps1"
-                    },
-                    {
-                        "type": "PowerShell",
                         "name": "Customisation1",
                         "scriptUri": "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/1_Creating_a_Custom_Win_Shared_Image_Gallery_Image/Win11DarkmodePsScript.ps1"
                     }
