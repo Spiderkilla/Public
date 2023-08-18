@@ -9,7 +9,8 @@ reg Query "HKEY_LOCAL_MACHINE\SICustom\Software\Microsoft\Windows\CurrentVersion
 reg Query "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Themes" /s | Out-File -FilePath C:\RegQueryHKLMBefore.txt -Append
 reg Query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes" /s | Out-File -FilePath C:\RegQueryHCUBefore1.txt -Append
 
-#eg Query "HKEY_LOCAL_MACHINE\SICustom\Software\Microsoft\Windows\CurrentVersion\Themes" /s
+#Create Accent registry key
+New-Item -Path HKLM:\SICustom\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent –Force
     
 # Set variables to indicate value and key to set
 #$RegistryPath = 'HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize'
@@ -19,14 +20,14 @@ New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersio
 New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLighTheme" -Value "0" -PropertyType DWORD -Force
 New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUsesLightTheme" -Value "0" -PropertyType DWORD -Force
 
-#Show accent color on the following surfaces
+#Enable accent color on the Taskbar etc..
 New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "ColorPrevalence" -Value "1" -PropertyType DWORD -Force
 
 #set color
 New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "StartColorMenu" -Value "0xffc06700" -PropertyType DWORD -Force
 New-ItemProperty -Path "HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" -Name "AccentColorMenu" -Value "0xffd47800" -PropertyType DWORD -Force
 
-#Using CMD
+#Using CMD to add HEX Binary color
 REG ADD "HKEY_LOCAL_MACHINE\SICustom\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" /v "AccentPalette" /t REG_BINARY /d 99EBFF004CC2FF000091F8000078D4000067C000003E9200001A6800F7630C00 /f
 
 #close registry because I have access denied to unload the hive.
