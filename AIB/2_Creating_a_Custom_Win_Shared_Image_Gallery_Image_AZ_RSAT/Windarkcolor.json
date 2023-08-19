@@ -63,6 +63,8 @@
                     {
                         "type": "PowerShell",
                         "name": "Customisation1",
+                        "runElevated": true,
+                        "runAsSystem": true,
                         "scriptUri": "https://raw.githubusercontent.com/Spiderkilla/Public/main/AIB/2_Creating_a_Custom_Win_Shared_Image_Gallery_Image_AZ_RSAT/Win11Darkmodev2PsScript.ps1"
                     }
                 ],
