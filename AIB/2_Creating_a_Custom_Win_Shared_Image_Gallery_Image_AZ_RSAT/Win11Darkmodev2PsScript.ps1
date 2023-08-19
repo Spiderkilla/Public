@@ -10,7 +10,7 @@ reg Query "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Themes" 
 reg Query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes" /s | Out-File -FilePath C:\RegQueryHCUBefore1.txt -Append
 
 #Create Accent registry key
-New-Item -Path HKLM:\SICustom\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent –Force
+New-Item -Path "HKLM:\SICustom\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent" –Force
     
 # Set variables to indicate value and key to set
 #$RegistryPath = 'HKLM:\SICustom\\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize'
