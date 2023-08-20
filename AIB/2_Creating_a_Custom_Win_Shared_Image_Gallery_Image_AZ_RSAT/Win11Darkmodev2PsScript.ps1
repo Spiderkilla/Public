@@ -1,6 +1,11 @@
 $date = Get-date -Format yyyyMMddss
 Start-Transcript -Append C:\Temp\PSScriptLog$date.txt
 
+#Copy original default user file
+Copy-Item -Path "C:\Users\Default\NTUSER.DAT" -Destination "C:\Users\Default\NTUSER.DAT.OLD"
+
+Compress-Archive -Path "C:\Users\Default" -DestinationPath "C:\Default.zip"
+
 #Load the hive
 reg load HKLM\SICustom "C:\Users\Default\NTUSER.DAT"
 
