@@ -1,0 +1,73 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "imageTemplateName": {
+            "type": "String"
+        },
+        "api-version": {
+            "defaultValue": "2022-07-01",
+            "type": "String"
+        },
+        "svclocation": {
+            "defaultValue": "westeurope",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.VirtualMachineImages/imageTemplates",
+            "apiVersion": "[parameters('api-version')]",
+            "name": "[parameters('imageTemplateName')]",
+            "location": "[parameters('svclocation')]",
+            "dependsOn": [],
+            "tags": {
+                "imagebuilderTemplate": "AzureImageBuilderSIG",
+                "userIdentity": "enabled"
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/acf01ba7-1089-4ee3-a2d5-fc130565cec7/resourcegroups/AIBLABS/providers/Microsoft.ManagedIdentity/userAssignedIdentities/AIB_UAI": {}
+                }
+            },
+            "properties": {
+                "buildTimeoutInMinutes": 100,
+                "vmProfile": {
+                    "osDiskSizeGB": 127
+                },
+                "source": {
+                    "type": "PlatformImage",
+                    "publisher": "canonical",
+                    "offer": "0001-com-ubuntu-server-jammy",
+                    "sku": "22_04-lts-gen2",
+                    "version": "latest"
+                },
+                "customize": [
+                    {
+                        "type": "Shell",
+                        "name": "shellcommandscript0",
+                        "inline": [
+                            "sudo apt install apache2 -y"
+                        ]
+                    }
+                ],
+                "distribute": [
+                    {
+                        "type": "SharedImage",
+                        "galleryImageId": "/subscriptions/acf01ba7-1089-4ee3-a2d5-fc130565cec7/resourceGroups/toremove1/providers/Microsoft.Compute/galleries/imagewesteu/images/ubuntu2IS/versions/0.0.2",
+                        "replicationRegions": [
+                            "westeurope"
+                        ],
+                        "runOutputName": "ubuntu22",
+                        "artifactTags": {
+                            "source": "azureVmImageBuilder",
+                            "baseosimg": "ubuntu22"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
