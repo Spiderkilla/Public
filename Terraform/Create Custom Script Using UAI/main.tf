@@ -21,7 +21,7 @@ resource "azurerm_virtual_machine_extension" "customscript" {
 
   protected_settings = <<SETTINGS
     {
-      "managedIdentity": { "clientId": "a7a065cf-dd13-42c5-8e39-dd5cc5740a34" },
+      "managedIdentity": { "clientId": "*****-*****-****-**-***********" },
       "fileUris": ["https://westdest.blob.core.windows.net/toremove/aduser.ps1"]
     }
   SETTINGS
