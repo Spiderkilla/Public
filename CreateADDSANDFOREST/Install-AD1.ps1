@@ -17,20 +17,20 @@ function Install-AD {
     Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools -Verbose  
   
     # Prepare the forest and domain  
-    Install-ADDSForest `  
-        -CreateDnsDelegation:$false `  
-        -DatabasePath "C:\Windows\NTDS" `  
-        -DomainMode "7" `  
-        -DomainName $DomainName `  
-        -DomainNetbiosName $DomainNetbiosName `  
-        -ForestMode "7" `  
-        -InstallDns:$true `  
-        -LogPath "C:\Windows\NTDS" `  
-        -NoRebootOnCompletion:$false `  
-        -SysvolPath "C:\Windows\SYSVOL" `  
-        -SafeModeAdministratorPassword $SafeModeAdministratorPassword `  
-        -Force:$true `  
-        -Verbose  
+    Install-ADDSForest `
+        -CreateDnsDelegation:$false `
+        -DatabasePath "C:\Windows\NTDS" `
+        -DomainMode "7" `
+        -DomainName $DomainName `
+        -DomainNetbiosName $DomainNetbiosName `
+        -ForestMode "7" `
+        -InstallDns:$true `
+        -LogPath "C:\Windows\NTDS" `
+        -NoRebootOnCompletion:$false `
+        -SysvolPath "C:\Windows\SYSVOL" `
+        -SafeModeAdministratorPassword $SafeModeAdministratorPassword `
+        -Force:$true `
+        -Verbose
 }  
   
 # Call the function  
