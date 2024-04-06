@@ -10,12 +10,6 @@
                 "description": "Domain name for Active Directory, ex: tenant.onmicrosoft.com"
             }
         },
-        "domainNetbiosName": {
-            "type": "string",
-            "metadata": {
-                "description": "domainNetbiosName for Active Directory, ex: TENANT"
-            }
-        },
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -31,7 +25,7 @@
         "PublicIP": {
             "type": "string",
             "metadata": {
-                "description": "Will add your Public Ip to the NSG rule to allow you to access the VM"
+                "description": "Will add your Public Ip to the NSG rule to allow you to access the VM, ex: can be found there https://ipinfo.io/"
             }
         },
         "vmName": {
@@ -129,7 +123,7 @@
             "tags": {
                 "DeployedWith": "ARM Template",
                 "Project": "AVDLABS",
-                "Owner": "SI"
+                "CreatedBy": "SI"
             },
             "properties": {
                 "securityRules": [
@@ -158,8 +152,11 @@
             "tags": {
                 "DeployedWith": "ARM Template",
                 "Project": "AVDLABS",
-                "Owner": "SI"
+                "CreatedBy": "SI"
             },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups',variables('nsgName'))]"
+            ],
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
@@ -175,7 +172,7 @@
                         "properties": {
                             "addressPrefix": "[parameters('Identity-Subnet-Prefix')]",
                             "networkSecurityGroup": {
-                                "id": "[resourceId('AVDWE', 'Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
                             }
                         }
                     },
@@ -196,7 +193,7 @@
             "tags": {
                 "DeployedWith": "ARM Template",
                 "Project": "AVDLABS",
-                "Owner": "SI"
+                "CreatedBy": "SI"
             },
             "sku": {
                 "name": "Standard"
@@ -215,10 +212,11 @@
             "tags": {
                 "DeployedWith": "ARM Template",
                 "Project": "AVDLABS",
-                "Owner": "SI"
+                "CreatedBy": "SI"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -244,7 +242,7 @@
             "tags": {
                 "DeployedWith": "ARM Template",
                 "Project": "AVDLABS",
-                "Owner": "SI"
+                "CreatedBy": "SI"
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
@@ -294,7 +292,7 @@
             "tags": {
                 "DeployedWith": "ARM Template",
                 "Project": "AVDLABS",
-                "Owner": "SI"
+                "CreatedBy": "SI"
             },
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
@@ -308,9 +306,9 @@
                 },
                 "protectedSettings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/Spiderkilla/Public/main/CreateADDSANDFOREST/Install-AD.ps1"
+                        "https://raw.githubusercontent.com/Spiderkilla/Public/main/CreateADDSANDFOREST/Install-AD1.ps1"
                     ],
-                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File Install-AD.ps1 ', parameters('DomainName') ,' ', parameters('DomainNetbiosName') ,' ', parameters('adminPassword'))]"
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File Install-AD1.ps1 ', parameters('DomainName') ,' ', parameters('adminPassword'))]"
                 }
             }
         }
