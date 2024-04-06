@@ -1,10 +1,7 @@
 function Install-AD {  
     param(  
         [Parameter(Mandatory=$true)]  
-        [string]$DomainName,  
-  
-        [Parameter(Mandatory=$true)]  
-        [string]$DomainNetbiosName,  
+        [string]$DomainName,
   
         [Parameter(Mandatory=$true)]  
         [string]$secret  
@@ -22,7 +19,6 @@ function Install-AD {
         -DatabasePath "C:\Windows\NTDS" `
         -DomainMode "7" `
         -DomainName $DomainName `
-        -DomainNetbiosName $DomainNetbiosName `
         -ForestMode "7" `
         -InstallDns:$true `
         -LogPath "C:\Windows\NTDS" `
@@ -34,4 +30,4 @@ function Install-AD {
 }  
   
 # Call the function  
-Install-AD -DomainName $args[0] -DomainNetbiosName $args[1] -secret $args[2]
+Install-AD -DomainName $args[0] -secret $args[1]
