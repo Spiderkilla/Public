@@ -56,7 +56,7 @@
                 "distribute": [
                     {
                         "type": "SharedImage",
-                        "galleryImageId": "/subscriptions/acf01ba7-1089-4ee3-a2d5-fc130565cec7/resourceGroups/toremove1/providers/Microsoft.Compute/galleries/imagewesteu/images/ubuntu2IS/versions/0.0.2",
+                        "galleryImageId": "/subscriptions/<subscriptionID>/resourceGroups/toremove1/providers/Microsoft.Compute/galleries/imagewesteu/images/ubuntu2IS/versions/0.0.2",
                         "replicationRegions": [
                             "westeurope"
                         ],
