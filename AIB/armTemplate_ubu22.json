@@ -29,7 +29,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "/subscriptions/acf01ba7-1089-4ee3-a2d5-fc130565cec7/resourcegroups/AIBLABS/providers/Microsoft.ManagedIdentity/userAssignedIdentities/AIB_UAI": {}
+                    "/subscriptions/<subscriptionID>/resourcegroups/AIBLABS/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<UAI>": {}
                 }
             },
             "properties": {
