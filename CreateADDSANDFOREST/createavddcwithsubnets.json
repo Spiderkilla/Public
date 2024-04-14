@@ -7,7 +7,7 @@
         "domainName": {
             "type": "string",
             "metadata": {
-                "description": "Domain name for Active Directory, ex: tenant.onmicrosoft.com"
+                "description": "Domain name for Active Directory, ex: mydomain.local"
             }
         },
         "adminUsername": {
