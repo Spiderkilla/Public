@@ -1,4 +1,33 @@
 
+param(  
+    [Parameter(Mandatory = $true)]  
+    [string]$DomainName,
+  
+    [Parameter(Mandatory = $true)]  
+    [string]$secret  
+)  
+  
+# Convert secret to secure string  
+$SafeModeAdministratorPassword = ConvertTo-SecureString $secret -AsPlainText -Force  
+  
+# Install AD DS role  
+Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools -Verbose  
+  
+# Prepare the forest and domain  
+Install-ADDSForest `
+    -CreateDnsDelegation:$false `
+    -DatabasePath "C:\Windows\NTDS" `
+    -DomainMode "7" `
+    -DomainName $DomainName `
+    -ForestMode "7" `
+    -InstallDns:$true `
+    -LogPath "C:\Windows\NTDS" `
+    -NoRebootOnCompletion:$true `
+    -SysvolPath "C:\Windows\SYSVOL" `
+    -SafeModeAdministratorPassword $SafeModeAdministratorPassword `
+    -Force:$true `
+    -Verbose
+
 # Specify the OU name
 $OUName = "AVDLABS"
 # Create an organizational unit (OU) for users
@@ -11,19 +40,17 @@ $OU = Get-ADOrganizationalUnit -Filter "Name -eq '$OUName'"
 $OUDN = $OU.DistinguishedName
 
 # Create users
-$users= "user1avdlab", "user2avdlab", "user3avdlab"
+$users = "user1avdlab", "user2avdlab", "user3avdlab"
 
 $Password = ConvertTo-SecureString "P@ssw0rd1234" -AsPlainText -Force
 
-#New-ADUser -Name "John Smith" -SamAccountName "jsmith" -UserPrincipalName $env:USERDNSDOMAIN -GivenName "John" -Surname "Smith" -AccountPassword $Password -Enabled $true -Path $OUDN
-
 foreach ($user in $users) {
-$UPN = $user + "@" + $env:USERDNSDOMAIN
+    $UPN = $user + "@" + $DomainName
 
     New-ADUser -Name $user `
-               -SamAccountName $user `
-               -UserPrincipalName $UPN `
-               -AccountPassword $Password `
-               -Enabled $true `
-               -Path $OUDN
+        -SamAccountName $user `
+        -UserPrincipalName $UPN `
+        -AccountPassword $Password `
+        -Enabled $true `
+        -Path $OUDN
 }
