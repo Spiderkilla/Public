@@ -24,7 +24,7 @@ try {
     }
 
     # Create users
-    $users = "user7avdlab", "user8avdlab", "user9avdlab"
+    $users = "user1avdlab", "user2avdlab", "user3avdlab"
 
     $Password = ConvertTo-SecureString "P@ssw0rd1234" -AsPlainText -Force
 
