@@ -15,8 +15,6 @@ $users= "user1avdlab", "user2avdlab", "user3avdlab"
 
 $Password = ConvertTo-SecureString "P@ssw0rd1234" -AsPlainText -Force
 
-#New-ADUser -Name "John Smith" -SamAccountName "jsmith" -UserPrincipalName $env:USERDNSDOMAIN -GivenName "John" -Surname "Smith" -AccountPassword $Password -Enabled $true -Path $OUDN
-
 foreach ($user in $users) {
 $UPN = $user + "@" + $env:USERDNSDOMAIN
 
