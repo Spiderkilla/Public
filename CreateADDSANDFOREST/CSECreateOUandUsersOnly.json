@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Region of the deployment"
+            }
+        },
+        "domainName": {
+            "type": "string",
+            "defaultValue": "spidacloud.onmicrosoft.com",
+            "metadata": {
+                "description": "Domain name for Active Directory, ex: tenant.onmicrosoft.com"
+            }
+        },
+
+        "vmName": {
+            "type": "string",
+            "defaultValue": "avdlabdc01",
+            "metadata": {
+                "description": "Name of the Virtual Machine."
+            }
+        }
+
+    },
+
+    "variables": {
+        "resourceTags": {
+            "DeployedWith": "ARM Template",
+            "Project": "AVDLABS"
+        }
+
+    },
+
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2020-06-01",
+            "name": "[concat(parameters('vmName'), '/CustomScriptExtension2')]",
+            "location": "[parameters('location')]",
+            "tags": "[variables('resourceTags')]",
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.10",
+                "autoUpgradeMinorVersion": true,
+                "settings": {},
+                "protectedSettings": {
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File CreateUsersv3.ps1', ' -DomainSuffix ', parameters('domainName'))]",
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/Spiderkilla/Public/main/CreateADDSANDFOREST/CreateUsersv3.ps1"
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
