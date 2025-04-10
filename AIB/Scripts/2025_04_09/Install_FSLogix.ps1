@@ -1,4 +1,9 @@
 # Define variables
+# This script installs FSLogix from a specified URL and extracts it to a temporary directory.
+# It then installs FSLogix silently and cleans up the temporary files afterward.
+# The script also includes logging functionality to track the progress of the installation.
+# The script is designed to be run on a Windows system with PowerShell.
+#$fslogixUrl = "https://aka.ms/fslogix_download\"
 $fslogixUrl = "https://download.microsoft.com/download/38803434-6d52-4668-b9a4-4d9bcf07248e/FSLogix_25.04.zip"
 $downloadPath = "C:\Temp\FSLogix.zip"
 $extractPath = "C:\Temp\FSLogix"
