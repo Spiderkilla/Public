@@ -12,7 +12,7 @@
         },
         "domainName": {
             "type": "string",
-            "defaultValue": "spidacloud.onmicrosoft.com",
+            "defaultValue": "",
             "metadata": {
                 "description": "Domain name for Active Directory, ex: tenant.onmicrosoft.com"
             }
