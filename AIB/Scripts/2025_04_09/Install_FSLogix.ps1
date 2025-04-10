@@ -1,4 +1,4 @@
-https://download.microsoft.com/download/38803434-6d52-4668-b9a4-4d9bcf07248e/FSLogix_25.04.zip# Script to automate FSLogix installation
+# Script to automate FSLogix installation
 
 # Define variables
 $fslogixUrl = "https://download.microsoft.com/download/38803434-6d52-4668-b9a4-4d9bcf07248e/FSLogix_25.04.zip"
