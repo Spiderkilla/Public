@@ -976,14 +976,11 @@ $PublicIPName = ("PublicIP_" + $RescueVmName)
 $PublicIpRgName = "$RescueVmRg"
 $nicName = ("NIC_" + $RescueVmName)
 $nicRGName = "$RescueVmRg"
+$SecurityType = "Standard"
 
 #created config:
-$vmConfig = New-AzVMConfig -VMName $RescueVmName -VMSize $VmSize
+$vmConfig = New-AzVMConfig -VMName $RescueVmName -VMSize $VmSize -SecurityType $SecurityType
 
-# Explicitly set security profile to Standard to avoid securityType errors
-$vmConfig.SecurityProfile = @{
-    SecurityType = "Standard"
-}
 
 # Check what is the operating system
 $WindowsOrLinux = $vm.StorageProfile.OsDisk.OsType
