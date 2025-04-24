@@ -976,10 +976,9 @@ $PublicIPName = ("PublicIP_" + $RescueVmName)
 $PublicIpRgName = "$RescueVmRg"
 $nicName = ("NIC_" + $RescueVmName)
 $nicRGName = "$RescueVmRg"
-$SecurityType = "Standard"
 
 #created config:
-$vmConfig = New-AzVMConfig -VMName $RescueVmName -VMSize $VmSize -SecurityType $SecurityType
+$vmConfig = New-AzVMConfig -VMName $RescueVmName -VMSize $VmSize
 
 
 # Check what is the operating system
