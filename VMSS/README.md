@@ -32,3 +32,26 @@ az vmss extension set \
   }'
 
 az vmss extension set --vmss-name my-vmss --name customScript --resource-group my-group --version 2.0 --publisher Microsoft.Azure.Extensions --settings '{"commandToExecute": "echo testing"}'
+
+### Example via Powershell:
+
+$BatchFile = "install_apache_host_html.sh"
+$ResourceGroupName = "HelloRG"
+$VMScaleSetName = "HelloVmSS"
+$TypeHandlerVersion = 2.1
+
+#Best Practice for secured parameters.
+$protectedSettings = @{
+}
+
+$publicSettings = @{ 
+"fileUris"= (,"https://raw.githubusercontent.com/Spiderkilla/Public/refs/heads/main/VMSS/$($BatchFile)");
+"commandToExecute"= "sh $($BatchFile)"
+}
+
+# Get information about the scale set
+$vmss = Get-AzVmss -ResourceGroupName $ResourceGroupName -VMScaleSetName $VMScaleSetName
+
+Add-AzVmssExtension -VirtualMachineScaleSet $vmss -Name "CustomScript" -Publisher "Microsoft.Azure.Extensions" -Type "CustomScript" -TypeHandlerVersion $TypeHandlerVersion -AutoUpgradeMinorVersion $true -Setting $publicSettings -ProtectedSetting $protectedSettings
+
+Update-AzVmss -ResourceGroupName $ResourceGroupName -Name $VMScaleSetName -VirtualMachineScaleSet $vmss
