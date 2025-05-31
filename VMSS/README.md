@@ -31,7 +31,7 @@ az vmss extension set \
     "commandToExecute": "./install_apache_host_html.sh"
   }'
 
-az vmss update --name MyScaleSet --resource-group MyResourceGroup
+az vmss update --name MyScaleSet --resource-group MyResourceGroup --instance-ids '*' 
 
 ```
 ### Example via Powershell:
