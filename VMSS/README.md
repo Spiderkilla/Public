@@ -14,7 +14,7 @@ This script installs Apache2 and deploys a fun HTML page on a Linux VM in Azure.
 
 - `install_apache_host_html.sh`: The installation and configuration script
 
-## 🚀 Deployment in Azure VM
+## 🚀 Deployment in Azure VMSS
 
 You can use this script during VM deployment with **Azure Custom Script Extension**.
 
