@@ -24,15 +24,15 @@ HTML_CONTENT="
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🐧 Welcome to Azure Linux VM: $VM_NAME 🐧</title>
+    <title>Welcome to Azure Linux VM: $VM_NAME</title>
     <style>
         body { background-color: #282c34; color: #61dafb; font-family: sans-serif; text-align: center; padding-top: 10%; }
         h1 { font-size: 3em; }
     </style>
 </head>
 <body>
-    <h1>🚀 Hello from Azure VM <strong>$VM_NAME</strong>!</h1>
-    <p>This page is served by Apache2 on a Linux VM 🎉</p>
+    <h1>Hello from Azure VM <strong>$VM_NAME</strong>!</h1>
+    <p>This page is served by Apache2 on a Linux VM</p>
 </body>
 </html>
 "
