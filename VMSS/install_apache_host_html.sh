@@ -3,6 +3,9 @@
 # Exit on any error
 set -e
 
+# Get the VM name (hostname)
+VM_NAME=$(hostname)
+
 # Update packages
 echo "Updating package list..."
 sudo apt-get update -y
@@ -16,19 +19,19 @@ echo "Enabling and starting Apache2..."
 sudo systemctl enable apache2
 sudo systemctl start apache2
 
-# Create a fun HTML file
+# Create a fun HTML file with the VM name in the title and body
 HTML_CONTENT="
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🐧 Welcome to Azure Linux VM 🐧</title>
+    <title>🐧 Welcome to Azure Linux VM: $VM_NAME 🐧</title>
     <style>
         body { background-color: #282c34; color: #61dafb; font-family: sans-serif; text-align: center; padding-top: 10%; }
         h1 { font-size: 3em; }
     </style>
 </head>
 <body>
-    <h1>🚀 Hello from your Azure VM!</h1>
+    <h1>🚀 Hello from Azure VM <strong>$VM_NAME</strong>!</h1>
     <p>This page is served by Apache2 on a Linux VM 🎉</p>
 </body>
 </html>
