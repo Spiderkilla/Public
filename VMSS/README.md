@@ -27,7 +27,7 @@ az vmss extension set \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
   --settings '{
-    "fileUris": ["https://raw.githubusercontent.com/<your-username>/<your-repo>/main/install_apache_host_html.sh"],
+    "fileUris": ["https://raw.githubusercontent.com/Spiderkilla/Public/refs/heads/main/VMSS/install_apache_host_html.sh"],
     "commandToExecute": "./install_apache_host_html.sh"
   }'
 
