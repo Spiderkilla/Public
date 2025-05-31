@@ -31,10 +31,11 @@ az vmss extension set \
     "commandToExecute": "./install_apache_host_html.sh"
   }'
 
-az vmss extension set --vmss-name my-vmss --name customScript --resource-group my-group --version 2.0 --publisher Microsoft.Azure.Extensions --settings '{"commandToExecute": "echo testing"}'
+az vmss update --name MyScaleSet --resource-group MyResourceGroup
 
+```
 ### Example via Powershell:
-
+```powershell
 $BatchFile = "install_apache_host_html.sh"
 $ResourceGroupName = "HelloRG"
 $VMScaleSetName = "HelloVmSS"
