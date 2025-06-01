@@ -1,0 +1,315 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "vmssuser"
+        },
+        "adminPassword": {
+            "type": "securestring"
+        },
+        "vmSku": {
+            "type": "string",
+            "defaultValue": "Standard_B2s"
+        },
+        "instanceCount": {
+            "type": "int",
+            "defaultValue": 2
+        },
+        "computerNamePrefix": {
+            "type": "string",
+            "defaultValue": "linuxvmss"
+        },
+        "scriptUrl": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/Spiderkilla/Public/refs/heads/main/VMSS/install_apache_host_html.sh",
+            "metadata": {
+                "description": "GitHub raw URL of the custom script (e.g., https://raw.githubusercontent.com/user/repo/main/setup.sh)"
+            }
+        }
+    },
+    "variables": {
+        "vnetName": "vnet-linux",
+        "subnetName": "subnet-vmss",
+        "subnetAppGw": "subnet-appgw",
+        "vmssName": "linuxVMSS",
+        "appGwName": "appGateway",
+        "ipName": "appGwPublicIP",
+        "backendPool": "appGwBackendPool",
+        "probeName": "httpProbe",
+        "nsgname": "vmssnsg"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2024-05-01",
+            "name": "[variables('vnetName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": { "addressPrefixes": [ "172.17.0.0/16" ] },
+                "subnets": [
+                    {
+                        "name": "[variables('subnetAppGw')]",
+                        "properties": { "addressPrefix": "172.17.1.0/24" }
+                    },
+                    {
+                        "name": "[variables('subnetName')]",
+                        "properties": { "addressPrefix": "172.17.2.0/24" }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2024-05-01",
+            "name": "[variables('nsgname')]",
+            "location": "[parameters('location')]"
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2024-05-01",
+            "name": "[variables('ipName')]",
+            "location": "[parameters('location')]",
+            "zones": [
+                "1",
+                "2",
+                "3"
+            ],
+            "sku": { "name": "Standard" },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "type": "Microsoft.Network/applicationGateways",
+            "apiVersion": "2024-05-01",
+            "name": "[variables('appGwName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('ipName'))]"
+            ],
+            "zones": [
+                "1",
+                "2",
+                "3"
+            ],
+            "properties": {
+                "sku": {
+                    "name": "Standard_v2",
+                    "tier": "Standard_v2",
+                    "family": "Generation_1"
+                },
+                "gatewayIPConfigurations": [
+                    {
+                        "name": "appGwIpConfig",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetAppGw'))]"
+                            }
+                        }
+                    }
+                ],
+                "sslCertificates": [],
+                "trustedRootCertificates": [],
+                "trustedClientCertificates": [],
+                "sslProfiles": [],
+                "frontendIPConfigurations": [
+                    {
+                        "name": "appGwPublicFrontendIpIPv4",
+                        "properties": {
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ipName'))]"
+                            }
+                        }
+                    }
+                ],
+                "frontendPorts": [
+                    {
+                        "name": "port_80",
+                        "properties": {
+                            "port": 80
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "[variables('backendPool')]",
+                        "properties": {}
+                    }
+                ],
+                "backendHttpSettingsCollection": [
+                    {
+                        "name": "httpSettings",
+                        "properties": {
+                            "port": 80,
+                            "protocol": "Http",
+                            "cookieBasedAffinity": "Disabled",
+                            "pickHostNameFromBackendAddress": true,
+                            "requestTimeout": 20,
+                            "probe": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/probes', variables('appGwName'), variables('probeName'))]"
+                            }
+                        }
+                    }
+                ],
+                "httpListeners": [
+                    {
+                        "name": "httpListener",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', variables('appGwName'), 'appGwPublicFrontendIpIPv4')]"
+                            },
+                            "frontendPort": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/frontendPorts', variables('appGwName'), 'port_80')]"
+                            },
+                            "protocol": "Http",
+                            "hostNames": [],
+                            "requireServerNameIndication": false,
+                            "customErrorConfigurations": []
+                        }
+                    }
+                ],
+                "listeners": [],
+                "urlPathMaps": [],
+                "requestRoutingRules": [
+                    {
+                        "name": "rule1",
+                        "properties": {
+                            "ruleType": "Basic",
+                            "priority": 1,
+                            "httpListener": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/httpListeners', variables('appGwName'), 'httpListener')]"
+                            },
+                            "backendAddressPool": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools', variables('appGwName'), variables('backendPool'))]"
+                            },
+                            "backendHttpSettings": {
+                                "id": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', variables('appGwName'), 'httpSettings')]"
+                            }
+                        }
+                    }
+                ],
+                "routingRules": [],
+                "probes": [
+                    {
+                        "name": "[variables('probeName')]",
+                        "properties": {
+                            "protocol": "Http",
+                            "path": "/",
+                            "interval": 30,
+                            "timeout": 30,
+                            "unhealthyThreshold": 3,
+                            "pickHostNameFromBackendHttpSettings": true,
+                            "minServers": 0
+                        }
+                    }
+                ],
+                "rewriteRuleSets": [],
+                "redirectConfigurations": [],
+                "privateLinkConfigurations": [],
+                "enableHttp2": true,
+                "autoscaleConfiguration": {
+                    "minCapacity": 0,
+                    "maxCapacity": 2
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2025-04-01",
+            "name": "vmssDeployment",
+            "dependsOn": [
+                "[concat('Microsoft.Network/applicationGateways/', variables('appGwName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Compute/virtualMachineScaleSets",
+                            "apiVersion": "2024-11-01",
+                            "name": "[variables('vmssName')]",
+                            "location": "[parameters('location')]",
+                            "sku": {
+                                "name": "[parameters('vmSku')]",
+                                "tier": "Standard",
+                                "capacity": "[parameters('instanceCount')]"
+                            },
+                            "properties": {
+                                "overprovision": true,
+                                "upgradePolicy": { "mode": "Manual" },
+                                "virtualMachineProfile": {
+                                    "storageProfile": {
+                                        "imageReference": {
+                                            "publisher": "Canonical",
+                                            "offer": "ubuntu-24_04-lts",
+                                            "sku": "server",
+                                            "version": "latest"
+                                        },
+                                        "osDisk": {
+                                            "createOption": "FromImage",
+                                            "managedDisk": {
+                                                "storageAccountType": "Standard_LRS"
+                                            }
+                                        }
+                                    },
+                                    "osProfile": {
+                                        "computerNamePrefix": "[parameters('computerNamePrefix')]",
+                                        "adminUsername": "[parameters('adminUsername')]",
+                                        "adminPassword": "[parameters('adminPassword')]",
+                                        "customData": "[base64(concat('#cloud-config\nruncmd:\n  - sudo apt-get update\n  - sudo apt-get install -y curl\n  - curl -o script.sh ', parameters('scriptUrl'), '\n  - chmod +x script.sh\n  - ./script.sh\n'))]"
+                                    },
+                                    "networkProfile": {
+                                        "networkInterfaceConfigurations": [
+                                            {
+                                                "name": "nicConfig",
+                                                "properties": {
+                                                    "primary": true,
+                                                    "ipConfigurations": [
+                                                        {
+                                                            "name": "ipconfig1",
+                                                            "properties": {
+                                                                "subnet": {
+                                                                    "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]"
+                                                                },
+                                                                "applicationGatewayBackendAddressPools": [
+                                                                    {
+                                                                        "id": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools', variables('appGwName'), variables('backendPool'))]"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ],
+                                                    "networkSecurityGroup": {
+                                                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgname'))]"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "diagnosticsProfile": {
+                                        "bootDiagnostics": {
+                                            "enabled": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "parameters": {}
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
