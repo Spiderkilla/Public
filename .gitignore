@@ -26,3 +26,6 @@ crash.*.log
 *.pem
 *.key
 *.pub
+
+# Ignore Terraform lock file (not recommended)
+.terraform.lock.hcl
