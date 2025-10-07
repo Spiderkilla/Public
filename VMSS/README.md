@@ -33,6 +33,16 @@ az vmss extension set \
 
 az vmss update --name MyScaleSet --resource-group MyResourceGroup --instance-ids '*' 
 
+OR
+
+az vmss extension set \
+  --resource-group remove \
+  --vmss-name vmsstest \
+  --name CustomScript \
+  --publisher Microsoft.Azure.Extensions \
+  --version 2.1 \
+  --settings '{"fileUris": ["https://raw.githubusercontent.com/Spiderkilla/Public/refs/heads/main/VMSS/install_apache2_host_redhat.sh"], "commandToExecute": "bash install_apache2_host_redhat.sh"}'
+
 ```
 ### Example via Powershell:
 ```powershell
